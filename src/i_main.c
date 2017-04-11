@@ -34,7 +34,11 @@
 
 void D_DoomMain (void);
 
+#ifdef  __ANDROID__
+int main_android(int argc, char **argv)
+#else
 int main(int argc, char **argv)
+#endif
 {
     // save arguments
 

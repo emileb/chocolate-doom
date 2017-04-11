@@ -277,8 +277,16 @@ void I_Error (char *error, ...)
         already_quitting = true;
     }
 
+
     // Message first.
     va_start(argptr, error);
+
+#ifdef __ANDROID__
+        char string[512];
+        vsprintf(string, error, argptr);
+        LOGI("%s",string);
+#endif
+
     //fprintf(stderr, "\nError: ");
     vfprintf(stderr, error, argptr);
     fprintf(stderr, "\n\n");

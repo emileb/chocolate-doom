@@ -41,6 +41,10 @@
 
 #endif
 
+#ifdef __ANDROID__
+#include <android/log.h>
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,"JNI", __VA_ARGS__))
+#endif
 
 //
 // The packed attribute forces structures to be packed into the minimum 
