@@ -507,6 +507,11 @@ void I_StartTic (void)
     {
         I_UpdateJoystick();
     }
+
+#ifdef __ANDROID__
+    extern void I_UpdateAndroid(void);
+    I_UpdateAndroid();
+#endif
 }
 
 
@@ -769,31 +774,24 @@ void I_FinishUpdate (void)
 
     // Blit from the paletted 8-bit screen buffer to the intermediate
     // 32-bit RGBA buffer that we can load into the texture.
-LOGI("1");
     SDL_LowerBlit(screenbuffer, &blit_rect, rgbabuffer, &blit_rect);
 
     // Update the intermediate texture with the contents of the RGBA buffer.
-LOGI("2");
     SDL_UpdateTexture(texture, NULL, rgbabuffer->pixels, rgbabuffer->pitch);
 
     // Make sure the pillarboxes are kept clear each frame.
-LOGI("3");
     SDL_RenderClear(renderer);
 
     // Render this intermediate texture into the upscaled texture
     // using "nearest" integer scaling.
-LOGI("4");
-
     SDL_SetRenderTarget(renderer, texture_upscaled);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
 
     // Finally, render this upscaled texture to screen using linear scaling.
-LOGI("5");
     SDL_SetRenderTarget(renderer, NULL);
     SDL_RenderCopy(renderer, texture_upscaled, NULL, NULL);
 
     // Draw!
-LOGI("6");
     SDL_RenderPresent(renderer);
 
     // Restore background and undo the disk indicator, if it was drawn.
@@ -1190,7 +1188,6 @@ static void SetVideoMode(void)
 
     if (screen == NULL)
     {
-    LOGI("%d %d %d %d",x,y,w,h);
         screen = SDL_CreateWindow(NULL, x, y, w, h, window_flags);
 
         if (screen == NULL)
@@ -1266,7 +1263,6 @@ static void SetVideoMode(void)
     SDL_RenderPresent(renderer);
 
     // Create the 8-bit paletted and the 32-bit RGBA screenbuffer surfaces.
-LOGI("Buffer %d  %d",  SCREENWIDTH, SCREENHEIGHT);
     if (screenbuffer == NULL)
     {
         screenbuffer = SDL_CreateRGBSurface(0,

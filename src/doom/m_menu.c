@@ -618,11 +618,26 @@ void M_DrawSave(void)
     }
 }
 
+#ifdef __ANDROID__
+#include <stdio.h>
+#include <time.h>
+#endif
 //
 // M_Responder calls this when user is finished
 //
 void M_DoSave(int slot)
 {
+#ifdef __ANDROID__
+{
+    extern char *          iwadfile;
+    time_t now;
+    struct tm *lcltime;
+    now = time ( NULL );
+    lcltime = localtime ( &now );
+    sprintf(savegamestrings[slot],"%s %02d/%02d/%02d %02d:%02d",iwadfile,lcltime->tm_mday,lcltime->tm_mon+1,lcltime->tm_year+1900-2000,
+           lcltime->tm_hour, lcltime->tm_min );
+}
+#endif
     G_SaveGame (slot,savegamestrings[slot]);
     M_ClearMenus ();
 
@@ -1568,8 +1583,12 @@ boolean M_Responder (event_t* ev)
 	  case KEY_ENTER:
 	    saveStringEnter = 0;
             I_StopTextInput();
+#ifdef __ANDROID__
+        M_DoSave(saveSlot);
+#else
 	    if (savegamestrings[saveSlot][0])
 		M_DoSave(saveSlot);
+#endif
 	    break;
 
 	  default:
@@ -1897,6 +1916,9 @@ void M_StartControlPanel (void)
 	return;
     
     menuactive = 1;
+ #ifdef __ANDROID__
+     messageNeedsInput = false;
+ #endif
     currentMenu = &MainDef;         // JDC
     itemOn = currentMenu->lastOn;   // JDC
 }
@@ -2033,6 +2055,9 @@ void M_Drawer (void)
 void M_ClearMenus (void)
 {
     menuactive = 0;
+#ifdef __ANDROID__
+    messageNeedsInput = false;
+#endif
     // if (!netgame && usergame && paused)
     //       sendpause = true;
 }

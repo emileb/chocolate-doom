@@ -3,7 +3,7 @@
 extern "C"
 {
 
-#include "in_android.h"
+#include "game_interface.h"
 
 #include <signal.h>
 #include <stdlib.h>
@@ -21,6 +21,7 @@ extern "C"
 
 #include "i_system.h"
 #include "m_fixed.h"
+#include "m_controls.h"
 
 #include <android/log.h>
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,"JNI", __VA_ARGS__))
@@ -83,99 +84,7 @@ int PortableKeyEvent(int state, int code, int unicode){
 
 }
 
-extern int key_right;
-extern int key_left;
 
-extern int key_up;
-extern int key_down;
-extern int key_strafeleft;
-extern int key_straferight;
-extern int key_fire;
-extern int key_use;
-extern int key_strafe;
-extern int key_speed;
-
-extern int key_jump;
-
-extern int key_flyup;
-extern int key_flydown;
-extern int key_flycenter;
-extern int key_lookup;
-extern int key_lookdown;
-extern int key_lookcenter;
-extern int key_invleft;
-extern int key_invright;
-extern int key_useartifact;
-// villsa [STRIFE] strife keys
-extern int key_usehealth;
-extern int key_invquery;
-extern int key_mission;
-extern int key_invpop;
-extern int key_invkey;
-extern int key_invhome;
-extern int key_invend;
-extern int key_invuse;
-extern int key_invdrop;
-
-extern int key_message_refresh;
-extern int key_pause;
-
-extern int key_multi_msg;
-extern int key_multi_msgplayer[8];
-
-extern int key_weapon1;
-extern int key_weapon2;
-extern int key_weapon3;
-extern int key_weapon4;
-extern int key_weapon5;
-extern int key_weapon6;
-extern int key_weapon7;
-extern int key_weapon8;
-
-extern int key_demo_quit;
-extern int key_spy;
-extern int key_prevweapon;
-extern int key_nextweapon;
-
-extern int key_map_north;
-extern int key_map_south;
-extern int key_map_east;
-extern int key_map_west;
-extern int key_map_zoomin;
-extern int key_map_zoomout;
-extern int key_map_toggle;
-extern int key_map_maxzoom;
-extern int key_map_follow;
-extern int key_map_grid;
-extern int key_map_mark;
-extern int key_map_clearmark;
-
-// menu keys:
-
-extern int key_menu_activate;
-extern int key_menu_up;
-extern int key_menu_down;
-extern int key_menu_left;
-extern int key_menu_right;
-extern int key_menu_back;
-extern int key_menu_forward;
-extern int key_menu_confirm;
-extern int key_menu_abort;
-
-extern int key_menu_help;
-extern int key_menu_save;
-extern int key_menu_load;
-extern int key_menu_volume;
-extern int key_menu_detail;
-extern int key_menu_qsave;
-extern int key_menu_endgame;
-extern int key_menu_messages;
-extern int key_menu_qload;
-extern int key_menu_quit;
-extern int key_menu_gamma;
-
-extern int key_menu_incscreen;
-extern int key_menu_decscreen;
 void ActionKey(int state,int key)
 {
 	add_choc_event(state?ev_keydown:ev_keyup,key,0,0);
@@ -186,8 +95,8 @@ int newweapon = -1;
 void PortableAction(int state, int action)
 {
 	LOGI("PortableAction %d   %d",state,action);
-
-	if (PortableInMenu())
+/*
+	if ( PortableGetScreenMode() == TS_MENU )
 	{
 		if (action >= PORT_ACT_MENU_UP && action <= PORT_ACT_MENU_BACK)
 		{
@@ -196,16 +105,40 @@ void PortableAction(int state, int action)
 					SDL_SCANCODE_RIGHT, SDL_SCANCODE_RETURN, SDL_SCANCODE_ESCAPE };
 			PortableKeyEvent(state, sdl_code[action-PORT_ACT_MENU_UP], 0);
 			return;
-
 		}
 	}
 	else
+	*/
 	{
 
 		int key = -1;
 
 		switch (action)
 		{
+		case PORT_ACT_MENU_UP:
+		    key = key_menu_up;
+		    break;
+        case PORT_ACT_MENU_DOWN:
+            key = key_menu_down;
+            break;
+        case PORT_ACT_MENU_LEFT:
+            key = key_menu_left;
+            break;
+        case PORT_ACT_MENU_RIGHT:
+            key = key_menu_right;
+            break;
+        case PORT_ACT_MENU_SELECT:
+            key = key_menu_forward;
+            break;
+        case PORT_ACT_MENU_BACK:
+            key = key_menu_activate;
+            break;
+        case PORT_ACT_MENU_CONFIRM:
+            key = key_menu_confirm;
+            break;
+        case PORT_ACT_MENU_ABORT:
+            key = key_menu_abort;
+            break;
 		case PORT_ACT_LEFT:
 			key = key_left;
 			break;
@@ -324,22 +257,6 @@ void PortableAction(int state, int action)
 	}
 }
 
-int mdx=0,mdy=0;
-void PortableMouse(float dx,float dy)
-{
-	dx *= 1500;
-	dy *= 1200;
-
-	mdx += dx;
-	mdy += dy;
-}
-
-int absx=0,absy=0;
-void PortableMouseAbs(float x,float y)
-{
-	absx = x;
-	absy = y;
-}
 
 
 // =================== FORWARD and SIDE MOVMENT ==============
@@ -421,41 +338,30 @@ void PortableInit(int argc,const char ** argv){
 }
 
 
-void PortableFrame(void){
-
+void PortableAutomapControl(float zoom, float x, float y)
+{
 
 }
 
-#ifndef CHOC_SETUP
-
-#if defined(CHOC_DOOM) || defined(CHOC_STRIFE)
 extern boolean menuactive;
 extern boolean paused;
 extern boolean usergame;
+extern boolean messageNeedsInput;
 
-int PortableInMenu(void){
 
-	return (menuactive || paused || !usergame);;
-}
-#else
-extern boolean MenuActive;
-extern boolean paused;
-extern boolean usergame;
-extern boolean askforquit;
-int PortableInMenu(void){
-
-	return (MenuActive || paused || !usergame || askforquit);
-}
-#endif
-#else //SETUP ONLY
-int PortableInMenu(void){
-	return 1;
-}
-#endif
-
-int PortableInAutomap(void)
+touchscreemode_t PortableGetScreenMode()
 {
-	return 0;
+    if(menuactive || paused)
+    {
+        if( messageNeedsInput )
+            return TS_Y_N;
+        else
+            return TS_MENU;
+    }
+    else if(usergame)
+        return TS_GAME;
+    else
+        return TS_BLANK;
 }
 
 int PortableShowKeyboard(void){
@@ -463,7 +369,6 @@ int PortableShowKeyboard(void){
 	return 0;
 }
 
-#ifndef CHOC_SETUP
 
 void I_UpdateAndroid(void)
 {
@@ -552,7 +457,6 @@ void G_AndroidBuildTiccmd(ticcmd_t *cmd)
 	}
 }
 
-#endif
 }
 
 
