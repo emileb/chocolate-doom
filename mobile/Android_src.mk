@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := choc-$(STATIC_LIB)
 
-LOCAL_CFLAGS :=  -O0 -g -Wall -Wdeclaration-after-statement  -D_GNU_SOURCE=1 -D_REENTRANT -DCHOC_DOOM
+LOCAL_CFLAGS :=  -Wall -Wdeclaration-after-statement  -D_GNU_SOURCE=1 -D_REENTRANT -DCHOC_DOOM
 
 
 LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \

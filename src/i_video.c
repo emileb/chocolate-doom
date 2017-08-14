@@ -1190,6 +1190,9 @@ static void SetVideoMode(void)
 
     if (screen == NULL)
     {
+#ifdef __ANDROID__
+        SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 ); // Defaults to 24 which is not needed and fails on old Tegras
+#endif
         screen = SDL_CreateWindow(NULL, x, y, w, h, window_flags);
 
         if (screen == NULL)

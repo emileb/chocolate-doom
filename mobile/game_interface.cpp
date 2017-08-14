@@ -95,20 +95,27 @@ int newweapon = -1;
 void PortableAction(int state, int action)
 {
 	LOGI("PortableAction %d   %d",state,action);
-/*
-	if ( PortableGetScreenMode() == TS_MENU )
+
+	if (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_BLANK )  || ( PortableGetScreenMode() == TS_Y_N ))
 	{
 		if (action >= PORT_ACT_MENU_UP && action <= PORT_ACT_MENU_BACK)
 		{
 
 			int sdl_code [] = { SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT,
 					SDL_SCANCODE_RIGHT, SDL_SCANCODE_RETURN, SDL_SCANCODE_ESCAPE };
-			PortableKeyEvent(state, sdl_code[action-PORT_ACT_MENU_UP], 0);
+
+			if ( PortableGetScreenMode() == TS_Y_N ) //special case send Y instead
+			{
+			    PortableKeyEvent(state, SDL_SCANCODE_Y, 0);
+			}
+			else
+			{
+			    PortableKeyEvent(state, sdl_code[action-PORT_ACT_MENU_UP], 0);
+			}
 			return;
 		}
 	}
 	else
-	*/
 	{
 
 		int key = -1;

@@ -27,6 +27,12 @@
 #define ENDOOM_W 80
 #define ENDOOM_H 25
 
+#ifdef __ANDROID__
+extern boolean menuactive;
+extern boolean paused;
+extern boolean usergame;
+extern boolean messageNeedsInput;
+#endif
 // 
 // Displays the text mode ending screen after the game quits
 //
@@ -38,6 +44,13 @@ void I_Endoom(byte *endoom_data)
     int indent;
 
     // Set up text mode screen
+
+#ifdef __ANDROID__ // Reset these so the blank screen is shown
+    menuactive = false;
+    paused = false;
+    usergame = false;
+    messageNeedsInput = false;
+#endif
 
     TXT_Init();
 
@@ -58,8 +71,14 @@ void I_Endoom(byte *endoom_data)
                TXT_SCREEN_W * 2);
     }
 
-    // Wait for a keypress
 
+#ifdef __ANDROID__ // Hack, make the Y N buttons fade out properly
+    for (y=0; y<20; ++y)
+    {
+      TXT_UpdateScreen();
+    }
+#endif
+    // Wait for a keypress
     while (true)
     {
         TXT_UpdateScreen();
