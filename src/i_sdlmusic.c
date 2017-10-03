@@ -832,6 +832,11 @@ static boolean WriteWrapperTimidityConfig(char *write_path)
 
 void I_InitTimidityConfig(void)
 {
+
+#ifdef __ANDROID__ // We have already done this
+	return;
+#endif
+
     char *env_string;
     boolean success;
 

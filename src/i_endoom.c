@@ -46,10 +46,13 @@ void I_Endoom(byte *endoom_data)
     // Set up text mode screen
 
 #ifdef __ANDROID__ // Reset these so the blank screen is shown
-    menuactive = false;
     paused = false;
     usergame = false;
+#ifdef CHOC_DOOM
+    menuactive = false;
     messageNeedsInput = false;
+#endif
+
 #endif
 
     TXT_Init();

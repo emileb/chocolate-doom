@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := choc-$(STATIC_LIB)
 
-LOCAL_CFLAGS :=  -Wall -Wdeclaration-after-statement  -D_GNU_SOURCE=1 -D_REENTRANT -DCHOC_DOOM
+LOCAL_CFLAGS :=  -Wall -Wdeclaration-after-statement  -D_GNU_SOURCE=1 -D_REENTRANT -DCHOCOLATE
 
 
 LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
@@ -110,16 +110,33 @@ net_query.c          net_query.h           \
 net_structrw.c       net_structrw.h        \
 z_native.c           z_zone.h
 
-LOCAL_SRC_FILES = $(ANDROID_FILES) $(COMMON_SOURCE_FILES) $(GAME_SOURCE_FILES) \
 
+ifeq ($(STATIC_LIB),setup)
+LOCAL_SRC_FILES = $(ANDROID_FILES) $(COMMON_SOURCE_FILES) $(SETUP_FILES)
+else
+LOCAL_SRC_FILES = $(ANDROID_FILES) $(COMMON_SOURCE_FILES) $(GAME_SOURCE_FILES)
+endif
 
-LOCAL_SRC_FILES += $(DEHACKED_SOURCE_FILES)
-LOCAL_CFLAGS += -DCHOC_DOOM
+ifeq ($(STATIC_LIB),doom)
+    LOCAL_SRC_FILES += $(DEHACKED_SOURCE_FILES)
+    LOCAL_CFLAGS += -DCHOC_DOOM
+else ifeq ($(STATIC_LIB),hexen)
+    LOCAL_CFLAGS += -DCHOC_HEXEN
+else ifeq ($(STATIC_LIB),strife)
+    LOCAL_SRC_FILES += $(DEHACKED_SOURCE_FILES)
+    LOCAL_CFLAGS += -DCHOC_STRIFE
+else ifeq ($(STATIC_LIB),heretic)
+    LOCAL_SRC_FILES += $(DEHACKED_SOURCE_FILES)
+    LOCAL_CFLAGS += -DCHOC_HERETIC
+else ifeq ($(STATIC_LIB),setup)
+    LOCAL_CFLAGS += -DCHOC_SETUP
+endif
+
 
 LOCAL_LDLIBS += -llog -lz -lGLESv1_CM
 
 LOCAL_STATIC_LIBRARIES += static-opl static-textscreen static-pcsound SDL2_net
-LOCAL_STATIC_LIBRARIES += static-doom
+LOCAL_STATIC_LIBRARIES += static-$(STATIC_LIB) static-textscreen
 
 LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer
 

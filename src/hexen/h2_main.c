@@ -166,6 +166,10 @@ void D_BindVariables(void)
 
     M_BindStringVariable("savedir", &SavePathConfig);
 
+#ifdef __ANDROID__
+    graphical_startup = 0; //Don't do hexen startup because tries 640x480
+#endif
+
     // Multiplayer chat macros
 
     for (i=0; i<10; ++i)
