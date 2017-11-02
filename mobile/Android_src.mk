@@ -9,8 +9,10 @@ LOCAL_CFLAGS :=  -Wall -Wdeclaration-after-statement  -D_GNU_SOURCE=1 -D_REENTRA
 
 
 LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
+                        $(TOP_DIR) \
                         $(TOP_DIR)/MobileTouchControls \
                         $(TOP_DIR)/Clibs_OpenTouch \
+                        $(TOP_DIR)/Doom/common_interface \
                         $(LOCAL_PATH)/../textscreen  \
                         $(LOCAL_PATH)/../pcsound  \
                         $(LOCAL_PATH)/../opl  \
@@ -136,7 +138,7 @@ endif
 LOCAL_LDLIBS += -llog -lz -lGLESv1_CM
 
 LOCAL_STATIC_LIBRARIES += static-opl static-textscreen static-pcsound SDL2_net
-LOCAL_STATIC_LIBRARIES += static-$(STATIC_LIB) static-textscreen
+LOCAL_STATIC_LIBRARIES += static-$(STATIC_LIB) static-textscreen license_static
 
 LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer
 
