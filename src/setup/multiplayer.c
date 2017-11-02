@@ -921,9 +921,33 @@ static void QueryResponseCallback(net_addr_t *addr,
     char ping_time_str[16];
     char description[47];
 
+    // When we connect we'll have to negotiate a common protocol that we
+    // can agree upon between the client and server. If we can't then we
+    // won't be able to connect, so it's pointless to include it in the
+    // results list. If protocol==NET_PROTOCOL_UNKNOWN then this may be
+    // an old, pre-3.0 Chocolate Doom server that doesn't support the new
+    // protocol negotiation mechanism, or it may be an incompatible fork.
+    if (querydata->protocol == NET_PROTOCOL_UNKNOWN)
+    {
+        return;
+    }
+
     M_snprintf(ping_time_str, sizeof(ping_time_str), "%ims", ping_time);
-    M_StringCopy(description, querydata->description,
-                 sizeof(description));
+
+    // Build description from server name field. Because there is limited
+    // space, we only include the player count if there are already players
+    // connected to the server.
+    if (querydata->num_players > 0)
+    {
+        M_snprintf(description, sizeof(description), "(%d/%d) ",
+                   querydata->num_players, querydata->max_players);
+    }
+    else
+    {
+        M_StringCopy(description, "", sizeof(description));
+    }
+
+    M_StringConcat(description, querydata->description, sizeof(description));
 
     TXT_AddWidgets(results_table,
                    TXT_NewLabel(ping_time_str),
@@ -945,8 +969,11 @@ static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
 
         if (query_servers_found == 0)
         {
-            TXT_AddWidget(results_table, NULL);
-            TXT_AddWidget(results_table, TXT_NewLabel("No servers found."));
+            TXT_AddWidgets(results_table,
+                TXT_TABLE_EMPTY,
+                TXT_NewLabel("No compatible servers found."),
+                NULL
+            );
         }
     }
 }
@@ -978,7 +1005,7 @@ static void FindInternetServer(TXT_UNCAST_ARG(widget),
                                TXT_UNCAST_ARG(user_data))
 {
     NET_StartMasterQuery();
-    ServerQueryWindow("Find internet server");
+    ServerQueryWindow("Find Internet server");
 }
 
 static void FindLANServer(TXT_UNCAST_ARG(widget),
