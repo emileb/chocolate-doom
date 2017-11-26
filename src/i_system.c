@@ -253,6 +253,9 @@ void I_Quit (void)
 }
 
 
+#ifdef __ANDROID__
+#include "LogWritter.h"
+#endif
 
 //
 // I_Error
@@ -285,6 +288,7 @@ void I_Error (char *error, ...)
         char string[512];
         vsprintf(string, error, argptr);
         LOGI("%s",string);
+        LogWritter_Write(string);
 #endif
 
     //fprintf(stderr, "\nError: ");

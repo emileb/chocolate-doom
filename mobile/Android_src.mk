@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := choc-$(STATIC_LIB)
 
-LOCAL_CFLAGS :=  -Wall -Wdeclaration-after-statement  -D_GNU_SOURCE=1 -D_REENTRANT -DCHOCOLATE
+LOCAL_CFLAGS :=  -DENGINE_NAME=\"chocdoom\" -Wall -Wdeclaration-after-statement  -D_GNU_SOURCE=1 -D_REENTRANT -DCHOCOLATE
 
 
 LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
@@ -137,7 +137,7 @@ endif
 
 LOCAL_LDLIBS += -llog -lz -lGLESv1_CM
 
-LOCAL_STATIC_LIBRARIES += static-opl static-textscreen static-pcsound SDL2_net
+LOCAL_STATIC_LIBRARIES += static-opl static-textscreen static-pcsound SDL2_net logwritter
 LOCAL_STATIC_LIBRARIES += static-$(STATIC_LIB) static-textscreen license_static
 
 LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer

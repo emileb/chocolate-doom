@@ -2163,6 +2163,10 @@ float M_GetFloatVariable(char *name)
 
 static char *GetDefaultConfigDir(void)
 {
+#ifdef __ANDROID__
+    return "./";
+#endif
+
 #if !defined(_WIN32) || defined(_WIN32_WCE)
 
     // Configuration settings are stored in an OS-appropriate path
