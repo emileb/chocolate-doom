@@ -1031,7 +1031,8 @@ void M_EndGame(int choice)
 	M_StartMessage(DEH_String(NETEND),NULL,false);
 	return;
     }
-	
+
+
     M_StartMessage(DEH_String(ENDGAME),M_EndGameResponse,true);
 }
 
@@ -1132,8 +1133,11 @@ void M_QuitDOOM(int choice)
 {
     DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY,
                  DEH_String(M_SelectEndMessage()));
-
+#ifdef __ANDROID__
+     M_QuitResponse(key_menu_confirm);
+#else
     M_StartMessage(endstring,M_QuitResponse,true);
+#endif
 }
 
 

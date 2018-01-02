@@ -23,13 +23,6 @@ extern "C"
 #include "m_fixed.h"
 #include "m_controls.h"
 
-#include <android/log.h>
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,"JNI", __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "JNI", __VA_ARGS__))
-#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR,"JNI", __VA_ARGS__))
-
-
-
 // FIFO STUFF ////////////////////
 // Copied from FTEQW, I don't know if this is thread safe, but it's safe enough for a game :)
 #define EVENTQUEUELENGTH 128
