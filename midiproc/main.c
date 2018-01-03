@@ -99,6 +99,7 @@ static void UnregisterSong()
     }
 
     Mix_FreeMusic(music);
+    music = NULL;
 }
 
 //
@@ -120,6 +121,9 @@ static boolean RegisterSong(const char *filename)
 {
     UnregisterSong();
     music = Mix_LoadMUS(filename);
+
+    // Remove the temporary MIDI file
+    remove(filename);
 
     if (music == NULL)
     {
@@ -170,7 +174,10 @@ static boolean MidiPipe_RegisterSong(buffer_reader_t *reader)
         return false;
     }
 
-    RegisterSong(filename);
+    if (!RegisterSong(filename))
+    {
+        return false;
+    }
 
     if (!WriteInt16(buffer, sizeof(buffer),
                     MIDIPIPE_PACKET_TYPE_REGISTER_SONG_ACK))
@@ -215,6 +222,7 @@ boolean MidiPipe_PlaySong(buffer_reader_t *reader)
 boolean MidiPipe_StopSong()
 {
     StopSong();
+    UnregisterSong();
 
     return true;
 }
