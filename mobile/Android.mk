@@ -34,8 +34,8 @@ include $(LOCAL_CHOC_PATH)/mobile/Android_src.mk
 #include $(LOCAL_CHOC_PATH)/mobile/Android_static.mk
 #include $(LOCAL_CHOC_PATH)/mobile/Android_src.mk
 
-#STATIC_LIB = setup
-#STATIC_PATH = $(LOCAL_CHOC_PATH)/src/setup
-#include $(LOCAL_CHOC_PATH)/mobile/Android_static.mk
-#include $(LOCAL_CHOC_PATH)/mobile/Android_src.mk
+STATIC_LIB = setup
+STATIC_PATH = $(LOCAL_CHOC_PATH)/src/setup
+include $(LOCAL_CHOC_PATH)/mobile/Android_static.mk
+include $(LOCAL_CHOC_PATH)/mobile/Android_src.mk
 

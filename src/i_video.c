@@ -1244,11 +1244,13 @@ static void SetVideoMode(void)
     // Important: Set the "logical size" of the rendering context. At the same
     // time this also defines the aspect ratio that is preserved while scaling
     // and stretching the texture into the window.
-#ifndef __ANDROID__
+#ifdef __ANDROID__
+    if (M_CheckParm("-android_aspect")) // If set, put black bars to maintain 4:3
+#endif
     SDL_RenderSetLogicalSize(renderer,
                              SCREENWIDTH,
                              actualheight);
-#endif
+
     // Force integer scales for resolution-independent rendering.
 
 #if SDL_VERSION_ATLEAST(2, 0, 5)
