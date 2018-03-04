@@ -1336,8 +1336,11 @@ void M_QuitStrife(int choice)
 {
     DEH_snprintf(endstring, sizeof(endstring),
                  "Do you really want to leave?\n\n" DOSY);
-  
+#ifdef __ANDROID__
+     M_QuitResponse(key_menu_confirm);
+#else
     M_StartMessage(endstring, M_QuitResponse, true);
+#endif
 }
 
 
@@ -2273,6 +2276,9 @@ void M_StartControlPanel (void)
         return;
     
     menuactive = 1;
+ #ifdef __ANDROID__
+     messageNeedsInput = false;
+ #endif
     menupause = true;
     currentMenu = &MainDef;         // JDC
     itemOn = currentMenu->lastOn;   // JDC
@@ -2380,6 +2386,9 @@ void M_ClearMenus (int choice)
     choice = 0;     // haleyjd: for no warning; not from decompilation.
     menuactive = 0;
     menupause = 0;
+#ifdef __ANDROID__
+    messageNeedsInput = false;
+#endif
 }
 
 

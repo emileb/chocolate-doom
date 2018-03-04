@@ -1136,7 +1136,11 @@ boolean MN_Responder(event_t * event)
 
     if (askforquit)
     {
+#ifdef __ANDROID__
+        if (key == key_menu_confirm || key == key_menu_forward) // Make gamepad select work
+#else
         if (key == key_menu_confirm)
+#endif
         {
             switch (typeofask)
             {

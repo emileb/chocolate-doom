@@ -663,6 +663,27 @@ void AM_Ticker(void)
 
     if (followplayer)
         AM_doFollowPlayer();
+#ifdef __ANDROID__
+    double zoom=0;
+    void Mobile_AM_controls(double *zoom, fixed_t *pan_x, fixed_t *pan_y );
+	Mobile_AM_controls(&zoom,&m_paninc.x,&m_paninc.y);
+
+    if( zoom > 0 )
+    {
+        mtof_zoommul =  ((int) ((1. + zoom )*FRACUNIT));
+	    ftom_zoommul =  ((int) (FRACUNIT/(1. + zoom)));
+    }
+    else if ( zoom < 0 )
+    {
+        mtof_zoommul = ((int) (FRACUNIT/(1. - zoom)));
+        ftom_zoommul =  ((int) ((1. - zoom )*FRACUNIT));
+    }
+    else
+    {
+        ftom_zoommul = FRACUNIT;
+        mtof_zoommul = FRACUNIT;
+    }
+#endif
 
     // Change the zoom if necessary
     if (ftom_zoommul != FRACUNIT)
@@ -671,6 +692,10 @@ void AM_Ticker(void)
     // Change x,y location
     if (m_paninc.x || m_paninc.y)
         AM_changeWindowLoc();
+
+#ifdef __ANDROID__
+   m_paninc.x = m_paninc.y = 0;
+#endif
     // Update light level
 // AM_updateLightLev();
 

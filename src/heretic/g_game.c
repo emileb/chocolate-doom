@@ -614,6 +614,11 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     }
     cmd->lookfly |= flyheight << 4;
 
+#ifdef __ANDROID__
+    extern void G_AndroidBuildTiccmd(ticcmd_t *cmd);
+    G_AndroidBuildTiccmd(cmd);
+#endif
+
 //
 // special buttons
 //

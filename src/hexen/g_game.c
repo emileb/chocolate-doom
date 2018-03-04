@@ -357,6 +357,14 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         // haleyjd: removed externdriver crap
         look = TOCENTER;
     }
+
+#ifdef __ANDROID__ //Also jump key to stop flying
+    if (gamekeydown[key_jump])
+    {
+        flyheight = TOCENTER;
+    }
+#endif
+
     // Use artifact key
     if (gamekeydown[key_useartifact])
     {
@@ -624,6 +632,10 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     }
     cmd->lookfly |= flyheight << 4;
 
+#ifdef __ANDROID__
+    extern void G_AndroidBuildTiccmd(ticcmd_t *cmd);
+    G_AndroidBuildTiccmd(cmd);
+#endif
 //
 // special buttons
 //

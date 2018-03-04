@@ -79,6 +79,7 @@ int PortableKeyEvent(int state, int code, int unicode){
 
 void PortableBackButton()
 {
+    LOGI("Back button");
     PortableKeyEvent(1, SDL_SCANCODE_ESCAPE,0 );
     PortableKeyEvent(0, SDL_SCANCODE_ESCAPE, 0);
 }
@@ -92,42 +93,62 @@ int newweapon = -1;
 
 void PortableAction(int state, int action)
 {
-	LOGI("PortableAction %d   %d",state,action);
+	LOGI("PortableAction %d   %d, ts = %d",state,action,PortableGetScreenMode());
 
 	if (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_BLANK )  || ( PortableGetScreenMode() == TS_Y_N ))
 	{
+	/*
 		if (action >= PORT_ACT_MENU_UP && action <= PORT_ACT_MENU_ABORT)
 		{
-
 			int sdl_code [] = { SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT,
 					SDL_SCANCODE_RIGHT, SDL_SCANCODE_RETURN, SDL_SCANCODE_ESCAPE, SDL_SCANCODE_Y, SDL_SCANCODE_N };
-/*
-            if ( PortableGetScreenMode() == TS_Y_N ) //special case send Y instead
-            {
-                if( action == PORT_ACT_MENU_ABORT )
-                {
-                    PortableKeyEvent(state, SDL_SCANCODE_N, 0);
-                    PortableKeyEvent(state, SDL_SCANCODE_N, 0);
-                }
-                else if ( action == PORT_ACT_MENU_CONFIRM )
-                    PortableKeyEvent(state, SDL_SCANCODE_Y, 0);
-            }
 
-            else
-            */
-            {
-			    PortableKeyEvent(state, sdl_code[action-PORT_ACT_MENU_UP], 0);
-			}
+			PortableKeyEvent(state, sdl_code[action-PORT_ACT_MENU_UP], 0);
+
 			return;
 		}
+		*/
+	        int key = -1;
+
+            switch (action)
+            {
+
+            case PORT_ACT_MENU_UP:
+                key = key_menu_up;
+                break;
+            case PORT_ACT_MENU_DOWN:
+                key = key_menu_down;
+                break;
+            case PORT_ACT_MENU_LEFT:
+                key = key_menu_left;
+                break;
+            case PORT_ACT_MENU_RIGHT:
+                key = key_menu_right;
+                break;
+            case PORT_ACT_MENU_SELECT:
+                key = key_menu_forward;
+                break;
+            case PORT_ACT_MENU_BACK:
+                key = key_menu_activate;
+                break;
+            case PORT_ACT_MENU_CONFIRM:
+                key = key_menu_confirm;
+                break;
+            case PORT_ACT_MENU_ABORT:
+                key = key_menu_abort;
+                break;
+            }
+
+            if (key != -1)
+                ActionKey(state,key);
 	}
 	else
 	{
-
 		int key = -1;
 
 		switch (action)
 		{
+		/* 04/03/18, why was this here??Broke gamepad buttons
 		case PORT_ACT_MENU_UP:
 		    key = key_menu_up;
 		    break;
@@ -152,6 +173,7 @@ void PortableAction(int state, int action)
         case PORT_ACT_MENU_ABORT:
             key = key_menu_abort;
             break;
+            */
 		case PORT_ACT_LEFT:
 			key = key_left;
 			break;
@@ -313,10 +335,7 @@ void PortableLookPitch(int mode, float pitch)
 	switch(mode)
 	{
 	case LOOK_MODE_MOUSE:
-		look_pitch_mouse += pitch;
-		break;
-	case LOOK_MODE_ABSOLUTE:
-		look_pitch_abs = pitch;
+		look_pitch_mouse -= pitch;
 		break;
 	case LOOK_MODE_JOYSTICK:
 		look_pitch_joy = pitch;
@@ -340,8 +359,6 @@ void PortableLookYaw(int mode, float yaw)
 		break;
 	}
 }
-
-
 
 
 extern int main_android(int argc, char *argv[]);
@@ -460,9 +477,6 @@ void G_AndroidBuildTiccmd(ticcmd_t *cmd)
 	case LOOK_MODE_MOUSE:
 		mlooky += look_pitch_mouse * 10000;
 		look_pitch_mouse = 0;
-		break;
-	case LOOK_MODE_ABSOLUTE:
-		mlooky = look_pitch_abs * 80;
 		break;
 	case LOOK_MODE_JOYSTICK:
 		mlooky += look_pitch_joy * 300;

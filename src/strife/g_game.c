@@ -628,7 +628,11 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
  
     cmd->forwardmove += forward; 
     cmd->sidemove += side;
-    
+ #ifdef __ANDROID__
+     extern void G_AndroidBuildTiccmd(ticcmd_t *cmd);
+     G_AndroidBuildTiccmd(cmd);
+ #endif
+
     // special buttons
     if (sendpause) 
     { 

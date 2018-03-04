@@ -690,6 +690,7 @@ void D_BindVariables(void)
     M_BindIntVariable("show_endoom",            &show_endoom);
     M_BindIntVariable("graphical_startup",      &graphical_startup);
 
+
     for (i=0; i<10; ++i)
     {
         char buf[12];
@@ -1006,9 +1007,10 @@ void D_DoomMain(void)
 
     D_ConnectNetGame();
 
+#ifndef __ANDROID__
     // haleyjd: removed WATCOMC
     initStartup();
-
+#endif
     //
     //  Build status bar line!
     //
