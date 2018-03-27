@@ -66,6 +66,8 @@ static char *TempFile(char *s)
     {
         tempdir = ".";
     }
+#elif __ANDROID__
+        tempdir = "./chocolate-doom/"; //Just use cwd
 #else
     // In Unix, just use /tmp.
 
@@ -332,7 +334,11 @@ int ExecuteDoom(execute_context_t *context)
 {
     char *response_file_arg;
     int result;
-    
+
+#ifdef __ANDROID__
+    fflush(context->stream); //Needed for Android, should ok on other platforms
+#endif
+
     fclose(context->stream);
 
     // Build the command line
@@ -341,15 +347,25 @@ int ExecuteDoom(execute_context_t *context)
 
     // Run Doom
 
+#ifndef __ANDROID__
     result = ExecuteCommand(GetExecutableName(), response_file_arg);
+#else
+    result = 0;
+#endif
 
     free(response_file_arg);
 
     // Destroy context
+#ifndef __ANDROID__
     remove(context->response_file);
+#endif
     free(context->response_file);
     free(context);
 
+#ifdef __ANDROID__
+    void launchChocGame();
+    launchChocGame();
+#endif
     return result;
 }
 

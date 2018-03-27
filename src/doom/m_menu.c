@@ -634,7 +634,7 @@ void M_DoSave(int slot)
     struct tm *lcltime;
     now = time ( NULL );
     lcltime = localtime ( &now );
-    sprintf(savegamestrings[slot],"%s %02d/%02d/%02d %02d:%02d",iwadfile,lcltime->tm_mday,lcltime->tm_mon+1,lcltime->tm_year+1900-2000,
+    snprintf(savegamestrings[slot],SAVESTRINGSIZE-1,"%s %02d/%02d/%02d %02d:%02d",iwadfile,lcltime->tm_mday,lcltime->tm_mon+1,lcltime->tm_year+1900-2000,
            lcltime->tm_hour, lcltime->tm_min );
 }
 #endif
@@ -740,7 +740,11 @@ void M_QuickSave(void)
 	return;
     }
     DEH_snprintf(tempstring, 80, QSPROMPT, savegamestrings[quickSaveSlot]);
+#ifdef __ANDROID__
+     M_QuickSaveResponse(key_menu_confirm);
+#else
     M_StartMessage(tempstring,M_QuickSaveResponse,true);
+#endif
 }
 
 
@@ -772,7 +776,11 @@ void M_QuickLoad(void)
 	return;
     }
     DEH_snprintf(tempstring, 80, QLPROMPT, savegamestrings[quickSaveSlot]);
+#ifdef __ANDROID__
+     M_QuickLoadResponse(key_menu_confirm);
+#else
     M_StartMessage(tempstring,M_QuickLoadResponse,true);
+#endif
 }
 
 

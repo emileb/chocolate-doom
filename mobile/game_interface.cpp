@@ -97,7 +97,7 @@ void PortableAction(int state, int action)
 
 	if (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_BLANK )  || ( PortableGetScreenMode() == TS_Y_N ))
 	{
-	/*
+#ifdef CHOC_SETUP
 		if (action >= PORT_ACT_MENU_UP && action <= PORT_ACT_MENU_ABORT)
 		{
 			int sdl_code [] = { SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT,
@@ -107,7 +107,7 @@ void PortableAction(int state, int action)
 
 			return;
 		}
-		*/
+#endif
 	        int key = -1;
 
             switch (action)
