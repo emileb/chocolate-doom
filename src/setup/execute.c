@@ -363,8 +363,8 @@ int ExecuteDoom(execute_context_t *context)
     free(context);
 
 #ifdef __ANDROID__
-    void launchChocGame();
-    launchChocGame();
+    //void launchChocGame();
+    //launchChocGame();
 #endif
     return result;
 }

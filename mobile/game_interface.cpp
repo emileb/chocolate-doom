@@ -89,7 +89,13 @@ void ActionKey(int state,int key)
 	add_choc_event(state?ev_keydown:ev_keyup,key,0,0);
 }
 
-int newweapon = -1;
+static int newweapon = -1;
+
+#ifdef CHOC_SETUP
+static boolean net_waiting_for_launch = true; // Create this to make menu buttons work below
+#else
+extern boolean net_waiting_for_launch; // In real game this exists
+#endif
 
 void PortableAction(int state, int action)
 {
@@ -97,50 +103,51 @@ void PortableAction(int state, int action)
 
 	if (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_BLANK )  || ( PortableGetScreenMode() == TS_Y_N ))
 	{
-#ifdef CHOC_SETUP
-		if (action >= PORT_ACT_MENU_UP && action <= PORT_ACT_MENU_ABORT)
+		if( net_waiting_for_launch )
 		{
-			int sdl_code [] = { SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT,
-					SDL_SCANCODE_RIGHT, SDL_SCANCODE_RETURN, SDL_SCANCODE_ESCAPE, SDL_SCANCODE_Y, SDL_SCANCODE_N };
+			if (action >= PORT_ACT_MENU_UP && action <= PORT_ACT_MENU_ABORT)
+			{
+				int sdl_code [] = { SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT,
+						SDL_SCANCODE_RIGHT, SDL_SCANCODE_RETURN, SDL_SCANCODE_ESCAPE, SDL_SCANCODE_Y, SDL_SCANCODE_N };
 
-			PortableKeyEvent(state, sdl_code[action-PORT_ACT_MENU_UP], 0);
+				PortableKeyEvent(state, sdl_code[action-PORT_ACT_MENU_UP], 0);
 
-			return;
+				return;
+			}
 		}
-#endif
-	        int key = -1;
 
-            switch (action)
-            {
+		int key = -1;
 
-            case PORT_ACT_MENU_UP:
-                key = key_menu_up;
-                break;
-            case PORT_ACT_MENU_DOWN:
-                key = key_menu_down;
-                break;
-            case PORT_ACT_MENU_LEFT:
-                key = key_menu_left;
-                break;
-            case PORT_ACT_MENU_RIGHT:
-                key = key_menu_right;
-                break;
-            case PORT_ACT_MENU_SELECT:
-                key = key_menu_forward;
-                break;
-            case PORT_ACT_MENU_BACK:
-                key = key_menu_activate;
-                break;
-            case PORT_ACT_MENU_CONFIRM:
-                key = key_menu_confirm;
-                break;
-            case PORT_ACT_MENU_ABORT:
-                key = key_menu_abort;
-                break;
-            }
+		switch (action)
+		{
+		case PORT_ACT_MENU_UP:
+			key = key_menu_up;
+			break;
+		case PORT_ACT_MENU_DOWN:
+			key = key_menu_down;
+			break;
+		case PORT_ACT_MENU_LEFT:
+			key = key_menu_left;
+			break;
+		case PORT_ACT_MENU_RIGHT:
+			key = key_menu_right;
+			break;
+		case PORT_ACT_MENU_SELECT:
+			key = key_menu_forward;
+			break;
+		case PORT_ACT_MENU_BACK:
+			key = key_menu_activate;
+			break;
+		case PORT_ACT_MENU_CONFIRM:
+			key = key_menu_confirm;
+			break;
+		case PORT_ACT_MENU_ABORT:
+			key = key_menu_abort;
+			break;
+		}
 
-            if (key != -1)
-                ActionKey(state,key);
+		if (key != -1)
+			ActionKey(state,key);
 	}
 	else
 	{
@@ -399,12 +406,11 @@ void PortableAutomapControl(float zoom, float x, float y)
     extern boolean paused;
     extern boolean usergame;
     extern boolean ASKYN;
-
     extern boolean automapactive;
 
     touchscreemode_t PortableGetScreenMode()
     {
-        if(MENUACTIVE || paused)
+        if(MENUACTIVE || paused || net_waiting_for_launch)
         {
             if( ASKYN )
                 return TS_Y_N;
