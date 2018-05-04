@@ -373,7 +373,11 @@ void TXT_GUIMainLoop(void)
 
         if (periodic_callback == NULL)
         {
+#ifdef __ANDROID__
+ 			TXT_Sleep(30); // Allow frame swap to on screen keyboard works properly
+#else
             TXT_Sleep(0);
+#endif
         }
         else
         {
