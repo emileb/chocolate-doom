@@ -12,7 +12,7 @@ LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
                         $(TOP_DIR) \
                         $(TOP_DIR)/MobileTouchControls \
                         $(TOP_DIR)/Clibs_OpenTouch \
-                        $(TOP_DIR)/Doom/common_interface \
+                        $(TOP_DIR)/Clibs_OpenTouch/idtech1 \
                         $(LOCAL_PATH)/../textscreen  \
                         $(LOCAL_PATH)/../pcsound  \
                         $(LOCAL_PATH)/../opl  \
@@ -21,8 +21,8 @@ LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
 
  
 ANDROID_FILES = \
-      ../../common_interface/android_jni.cpp \
-      ../../common_interface/touch_interface.cpp \
+      ../../../Clibs_OpenTouch/idtech1/android_jni.cpp \
+      ../../../Clibs_OpenTouch/idtech1/touch_interface.cpp \
       ../mobile/game_interface.cpp \
           
 COMMON_SOURCE_FILES=\
