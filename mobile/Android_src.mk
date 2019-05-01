@@ -138,9 +138,9 @@ endif
 LOCAL_LDLIBS += -llog -lz -lGLESv1_CM
 
 LOCAL_STATIC_LIBRARIES += static-opl static-textscreen static-pcsound SDL2_net logwritter
-LOCAL_STATIC_LIBRARIES += static-$(STATIC_LIB) static-textscreen license_static
+LOCAL_STATIC_LIBRARIES += static-$(STATIC_LIB) static-textscreen
 
-LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer
+LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer core_shared
 
 include $(BUILD_SHARED_LIBRARY)
 
