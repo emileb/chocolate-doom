@@ -215,6 +215,12 @@ void I_InitSound(boolean use_sfx_prefix)
     nomusic = M_CheckParm("-nomusic") > 0;
 
     // Initialize the sound and music subsystems.
+#ifdef __ANDROID__
+    if(  M_CheckParm("-use_gus") > 0 )
+    {
+        snd_musicdevice = SNDDEVICE_GUS;
+    }
+#endif
 
     if (!nosound && !screensaver_mode)
     {
@@ -436,8 +442,9 @@ void I_BindSoundVariables(void)
     extern char *snd_dmxoption;
     extern int use_libsamplerate;
     extern float libsamplerate_scale;
-
+#ifndef __ANDROID__ // Set this through the cmd args from Android
     M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
+#endif
     M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
     M_BindIntVariable("snd_sbport",              &snd_sbport);
     M_BindIntVariable("snd_sbirq",               &snd_sbirq);
