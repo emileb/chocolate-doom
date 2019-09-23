@@ -470,46 +470,55 @@ static int mlooky = 0;
 //Called from the game
 void G_AndroidBuildTiccmd(ticcmd_t *cmd)
 {
-	cmd->forwardmove  += forwardmove_android * forwardmove[1];
-	cmd->sidemove  += sidemove_android   * sidemove[1];
+
+    int blockGamepad( void );
+    int blockMove = blockGamepad() & ANALOGUE_AXIS_FWD;
+    int blockLook = blockGamepad() & ANALOGUE_AXIS_PITCH;
 
 
-    mlooky += look_pitch_mouse * 10000;
-    look_pitch_mouse = 0;
-    mlooky += look_pitch_joy * 300;
+    if( !blockMove )
+    {
+	    cmd->forwardmove  += forwardmove_android * forwardmove[1];
+    	cmd->sidemove  += sidemove_android   * sidemove[1];
+    }
 
+    if( !blockLook )
+    {
+        mlooky += look_pitch_mouse * 10000;
+        look_pitch_mouse = 0;
+        mlooky += look_pitch_joy * 300;
 
-	//LOGI("mlooky = %d",mlooky);
+        //LOGI("mlooky = %d",mlooky);
 
 #ifdef CHOC_STRIFE
-	if (abs(mlooky) > 50) //make look more senstive for strife
+        if (abs(mlooky) > 50) //make look more senstive for strife
 #else
-	if (abs(mlooky) > 100)
+        if (abs(mlooky) > 100)
 #endif
-	{
-		int look = -mlooky/100;
-		if (look > 7) look = 7;
-		if (look < -7) look = -7;
+        {
+            int look = -mlooky/100;
+            if (look > 7) look = 7;
+            if (look < -7) look = -7;
 
-		if (look < 0)
-		{
-			look += 16;
-		}
-		cmd->lookfly |= look & 0xF;
+            if (look < 0)
+            {
+                look += 16;
+            }
+            cmd->lookfly |= look & 0xF;
 
-		if (mlooky > 0)
-			cmd->buttons2 |= BT2_LOOKDOWN;
-		else
-			cmd->buttons2 |= BT2_LOOKUP;
+            if (mlooky > 0)
+                cmd->buttons2 |= BT2_LOOKDOWN;
+            else
+                cmd->buttons2 |= BT2_LOOKUP;
 
-		mlooky = 0;
-	}
+            mlooky = 0;
+        }
 
 
-    cmd->angleturn += look_yaw_mouse * 70000;
-    look_yaw_mouse = 0;
-    cmd->angleturn += look_yaw_joy * 1000;
-
+        cmd->angleturn += look_yaw_mouse * 70000;
+        look_yaw_mouse = 0;
+        cmd->angleturn += look_yaw_joy * 1000;
+    }
 
 	if (newweapon != -1)
 	{
