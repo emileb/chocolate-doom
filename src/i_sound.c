@@ -220,6 +220,14 @@ void I_InitSound(boolean use_sfx_prefix)
     {
         snd_musicdevice = SNDDEVICE_GUS;
     }
+    if(  M_CheckParm("-use_genmidi") > 0 )
+    {
+        snd_musicdevice = SNDDEVICE_GENMIDI;
+    }
+    if(  M_CheckParm("-use_opl") > 0 )
+    {
+        snd_musicdevice = SNDDEVICE_ADLIB;
+    }
 #endif
 
     if (!nosound && !screensaver_mode)
