@@ -627,7 +627,7 @@ void M_DrawSave(void)
 //
 void M_DoSave(int slot)
 {
-#ifdef __ANDROID__
+#ifdef __ANDROID__DONT_DO_THIS
 {
     extern char *          iwadfile;
     time_t now;
