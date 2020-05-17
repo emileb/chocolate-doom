@@ -2164,7 +2164,7 @@ float M_GetFloatVariable(char *name)
 static char *GetDefaultConfigDir(void)
 {
 #ifdef __ANDROID__
-    return "./chocolate-doom/";
+    return "./user_files/chocolate-doom/";
 #endif
 
 #if !defined(_WIN32) || defined(_WIN32_WCE)
