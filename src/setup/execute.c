@@ -67,7 +67,7 @@ static char *TempFile(char *s)
         tempdir = ".";
     }
 #elif __ANDROID__
-        tempdir = "./chocolate-doom/"; //Just use cwd
+    tempdir = "./user_files/chocolate-doom/"; //Just use cwd
 #else
     // In Unix, just use /tmp.
 
