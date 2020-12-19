@@ -751,8 +751,7 @@ void I_FinishUpdate (void)
 	    I_VideoBuffer[ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0x0;
     }
 
-    // Draw disk icon before blit, if necessary.
-    V_DrawDiskIcon();
+    // Draw disk icon before blit, if necessary.F
 
     if (palette_to_set)
     {
@@ -1197,6 +1196,10 @@ static void SetVideoMode(void)
 
         pixel_format = SDL_GetWindowPixelFormat(screen);
 
+#ifdef __ANDROID__
+		pixel_format = SDL_PIXELFORMAT_BGRA8888;
+#endif
+
         SDL_SetWindowMinimumSize(screen, SCREENWIDTH, actualheight);
 
         I_InitWindowTitle();
@@ -1212,7 +1215,7 @@ static void SetVideoMode(void)
         I_Error("Could not get display mode for video display #%d: %s",
         video_display, SDL_GetError());
     }
-#ifndef __ANDROID__ // No vsync, also definetly no software mode as VERY slow
+#ifndef __ANDROID__ // No vsync, also definetly on software mode as VERY slow
     // Turn on vsync if we aren't in a -timedemo
     if (!singletics && mode.refresh_rate > 0)
     {
