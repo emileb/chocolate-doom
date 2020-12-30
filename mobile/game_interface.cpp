@@ -390,13 +390,13 @@ void PortableAutomapControl(float zoom, float x, float y)
     }
 #else
 
-    #if defined(CHOC_DOOM) || defined(CHOC_STRIFE)
+#if defined(CHOC_DOOM) || defined(CHOC_STRIFE)
     #define MENUACTIVE menuactive
     #define ASKYN messageNeedsInput
-    #elif defined(CHOC_HEXEN) || defined(CHOC_HERETIC)
+#elif defined(CHOC_HEXEN) || defined(CHOC_HERETIC)
     #define MENUACTIVE MenuActive
     #define ASKYN askforquit
-    #endif
+#endif
 
     extern boolean MENUACTIVE;
     extern boolean paused;
@@ -406,12 +406,13 @@ void PortableAutomapControl(float zoom, float x, float y)
 
     touchscreemode_t PortableGetScreenMode()
     {
-        if(MENUACTIVE || paused || net_waiting_for_launch)
+		if( ASKYN )
+		{
+			return TS_Y_N;
+		}
+		else if(MENUACTIVE || paused || net_waiting_for_launch)
         {
-            if( ASKYN )
-                return TS_Y_N;
-            else
-                return TS_MENU;
+			return TS_MENU;
         }
         else if(usergame)
         {
