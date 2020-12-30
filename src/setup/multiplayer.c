@@ -198,7 +198,11 @@ static void AddIWADParameter(execute_context_t *exec)
 {
     if (iwadfile != NULL)
     {
+#ifdef __ANDROID__
+
+#else
         AddCmdLineParameter(exec, "-iwad %s", iwadfile);
+#endif
     }
 }
 
