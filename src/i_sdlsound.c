@@ -851,6 +851,28 @@ static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
 
 static void I_SDL_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
 {
+#ifdef __ANDROID__
+  	int i;
+  	char namebuf[9];
+
+    for (i=0; i<num_sounds; ++i)
+    {
+        if ((i % 6) == 0)
+        {
+            printf(".");
+            fflush(stdout);
+        }
+
+        GetSfxLumpName(&sounds[i], namebuf, sizeof(namebuf));
+
+        sounds[i].lumpnum = W_CheckNumForName(namebuf);
+
+        if (sounds[i].lumpnum != -1)
+        {
+            CacheSFX(&sounds[i]);
+        }
+    }
+#endif
     // no-op
 }
 
