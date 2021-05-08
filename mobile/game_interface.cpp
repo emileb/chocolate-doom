@@ -299,7 +299,10 @@ void PortableAction(int state, int action)
 	}
 }
 
+void PortableCommand(const char * cmd)
+{
 
+}
 
 // =================== FORWARD and SIDE MOVMENT ==============
 
