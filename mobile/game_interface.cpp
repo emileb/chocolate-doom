@@ -292,6 +292,10 @@ void PortableAction(int state, int action)
 		case PORT_ACT_WEAP8:
 			newweapon = 8;
 			break;
+
+		case PORT_ACT_MP_SAY:
+			key = key_multi_msg;
+			break;
 		}
 
 		if (key != -1)
