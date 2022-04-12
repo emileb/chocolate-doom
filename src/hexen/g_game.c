@@ -98,7 +98,7 @@ boolean longtics;               // specify high resolution turning in demos
 boolean lowres_turn;
 boolean shortticfix;            // calculate lowres turning like doom
 boolean demoplayback;
-boolean demoextend;
+//boolean demoextend;
 byte *demobuffer, *demo_p, *demoend;
 boolean singledemo;             // quit after playing a demo from cmdline
 
