@@ -15,7 +15,9 @@ LOCAL_C_INCLUDES +=     $(SDL_INCLUDE_PATHS) \
                         $(LOCAL_CHOC_PATH)/src \
                         $(LOCAL_CHOC_PATH)/textscreen
 
-LOCAL_SRC_FILES = $(lib$(STATIC_LIB)_a_SOURCES)
+LOCAL_SRC_FILES_ALL = $(lib$(STATIC_LIB)_a_SOURCES)
+
+LOCAL_SRC_FILES = $(filter %.c,$(LOCAL_SRC_FILES_ALL))
 
 include $(BUILD_STATIC_LIBRARY)
 

@@ -26,92 +26,84 @@ ANDROID_FILES = \
       ../mobile/game_interface.cpp \
           
 COMMON_SOURCE_FILES=\
-i_main.c                                   \
-i_system.c           i_system.h            \
-m_argv.c             m_argv.h              \
-m_misc.c             m_misc.h
+i_main.c  \
+i_system.c \
+m_argv.c \
+m_misc.c
 
-GAME_SOURCE_FILES=\
-aes_prng.c           aes_prng.h            \
-d_event.c            d_event.h             \
-                     doomkeys.h            \
-                     doomtype.h            \
-d_iwad.c             d_iwad.h              \
-d_loop.c             d_loop.h              \
-d_mode.c             d_mode.h              \
-                     d_ticcmd.h            \
-deh_str.c            deh_str.h             \
-gusconf.c            gusconf.h             \
-i_cdmus.c            i_cdmus.h             \
-i_endoom.c           i_endoom.h            \
-i_input.c            i_input.h             \
-i_joystick.c         i_joystick.h          \
-                     i_swap.h              \
-i_oplmusic.c                               \
-i_pcsound.c                                \
-i_sdlmusic.c                               \
-i_sdlsound.c                               \
-i_sound.c            i_sound.h             \
-i_timer.c            i_timer.h             \
-i_video.c            i_video.h             \
-i_videohr.c          i_videohr.h           \
-midifile.c           midifile.h            \
-mus2mid.c            mus2mid.h             \
-m_bbox.c             m_bbox.h              \
-m_cheat.c            m_cheat.h             \
-m_config.c           m_config.h            \
-m_controls.c         m_controls.h          \
-m_fixed.c            m_fixed.h             \
-net_client.c         net_client.h          \
-net_common.c         net_common.h          \
-net_dedicated.c      net_dedicated.h       \
-net_defs.h                                 \
-net_gui.c            net_gui.h             \
-net_io.c             net_io.h              \
-net_loop.c           net_loop.h            \
-net_packet.c         net_packet.h          \
-net_query.c          net_query.h           \
-net_sdl.c            net_sdl.h             \
-net_server.c         net_server.h          \
-net_structrw.c       net_structrw.h        \
-sha1.c               sha1.h                \
-memio.c              memio.h               \
-tables.c             tables.h              \
-v_diskicon.c         v_diskicon.h          \
-v_video.c            v_video.h             \
-                     v_patch.h             \
-w_checksum.c         w_checksum.h          \
-w_main.c             w_main.h              \
-w_wad.c              w_wad.h               \
-w_file.c             w_file.h              \
-w_file_stdc.c                              \
-w_file_posix.c                             \
-w_file_win32.c                             \
-w_merge.c            w_merge.h             \
-z_zone.c             z_zone.h
+GAME_SOURCE_FILES= \
+aes_prng.c \
+d_event.c \
+d_iwad.c \
+d_loop.c \
+d_mode.c \
+deh_str.c \
+gusconf.c \
+i_cdmus.c \
+i_endoom.c \
+i_input.c \
+i_joystick.c \
+i_oplmusic.c \
+i_pcsound.c \
+i_sdlmusic.c \
+i_sdlsound.c \
+i_sound.c \
+i_timer.c \
+i_video.c \
+i_videohr.c \
+midifile.c \
+mus2mid.c \
+m_bbox.c \
+m_cheat.c \
+m_config.c \
+m_controls.c \
+m_fixed.c   \
+net_client.c \
+net_common.c \
+net_dedicated.c \
+net_gui.c \
+net_io.c  \
+net_loop.c \
+net_packet.c \
+net_query.c \
+net_sdl.c \
+net_server.c \
+net_structrw.c \
+sha1.c \
+memio.c \
+tables.c \
+v_diskicon.c \
+v_video.c \
+w_checksum.c \
+w_main.c \
+w_wad.c \
+w_file.c \
+w_file_stdc.c \
+w_file_posix.c \
+w_file_win32.c \
+w_merge.c \
+z_zone.c
 
 DEHACKED_SOURCE_FILES =                    \
-deh_defs.h                                 \
-deh_io.c             deh_io.h              \
-deh_main.c           deh_main.h            \
-deh_mapping.c        deh_mapping.h         \
+deh_io.c \
+deh_main.c  \
+deh_mapping.c \
 deh_text.c
 
 
 SETUP_FILES = \
-deh_str.c            deh_str.h             \
-d_mode.c             d_mode.h              \
-d_iwad.c             d_iwad.h              \
-i_timer.c            i_timer.h             \
-m_config.c           m_config.h            \
-m_controls.c         m_controls.h          \
-net_io.c             net_io.h              \
-net_packet.c         net_packet.h          \
-net_sdl.c            net_sdl.h             \
-net_query.c          net_query.h           \
-net_structrw.c       net_structrw.h        \
-z_native.c           z_zone.h
-
+deh_str.c \
+d_mode.c \
+d_iwad.c \
+i_timer.c \
+m_config.c \
+m_controls.c \
+net_io.c \
+net_packet.c \
+net_sdl.c \
+net_query.c \
+net_structrw.c \
+z_native.c
 
 ifeq ($(STATIC_LIB),setup)
 LOCAL_SRC_FILES = $(ANDROID_FILES) $(COMMON_SOURCE_FILES) $(SETUP_FILES)
