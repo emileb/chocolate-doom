@@ -74,7 +74,6 @@ int PortableKeyEvent(int state, int code, int unicode){
 		SDL_SendKeyboardKey(SDL_RELEASED, (SDL_Scancode) code);
 
 	return 0;
-
 }
 
 void PortableBackButton()
@@ -294,7 +293,8 @@ void PortableAction(int state, int action)
 			break;
 
 		case PORT_ACT_MP_SAY:
-			key = key_multi_msg;
+			// Need to send they key as a text char which is data2
+			add_choc_event(state ? ev_keydown : ev_keyup, 0, key_multi_msg, 0);
 			break;
 		}
 
