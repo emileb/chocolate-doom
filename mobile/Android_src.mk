@@ -17,8 +17,6 @@ LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
                         $(LOCAL_PATH)/../pcsound  \
                         $(LOCAL_PATH)/../opl  \
                         $(LOCAL_PATH)/../mobile \
-
-
  
 ANDROID_FILES = \
       ../../../Clibs_OpenTouch/idtech1/android_jni.cpp \
@@ -133,6 +131,10 @@ LOCAL_STATIC_LIBRARIES += static-opl static-textscreen static-pcsound SDL2_net l
 LOCAL_STATIC_LIBRARIES += static-$(STATIC_LIB) static-textscreen
 
 LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer core_shared saffal
+
+#Strip unused functions/data
+LOCAL_CFLAGS += -fvisibility=hidden -fdata-sections -ffunction-sections -fPIC
+LOCAL_LDFLAGS += -Wl,--gc-sections -flto
 
 include $(BUILD_SHARED_LIBRARY)
 

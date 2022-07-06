@@ -19,6 +19,9 @@ LOCAL_SRC_FILES_ALL = $(lib$(STATIC_LIB)_a_SOURCES)
 
 LOCAL_SRC_FILES = $(filter %.c,$(LOCAL_SRC_FILES_ALL))
 
+#Strip unused functions/data
+LOCAL_CFLAGS += -fvisibility=hidden -fdata-sections -ffunction-sections
+
 include $(BUILD_STATIC_LIBRARY)
 
 
