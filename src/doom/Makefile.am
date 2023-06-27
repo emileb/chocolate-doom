@@ -89,9 +89,9 @@ st_stuff.c         st_stuff.h   \
 v_snow.c           v_snow.h     \
 wi_stuff.c         wi_stuff.h
 
-if HAVE_ICONS
+#if HAVE_ICONS
 
-doom_icon.c : $(top_builddir)/data/doom.png
-	$(top_builddir)/data/convert-icon $(top_builddir)/data/doom.png $@
+#doom_icon.c : $(top_builddir)/data/doom.png
+#   $(top_builddir)/data/convert-icon $(top_builddir)/data/doom.png $@
 
-endif
+#endif

@@ -531,6 +531,11 @@ void I_StartTic (void)
     {
         I_UpdateJoystick();
     }
+
+#ifdef __ANDROID__
+    extern void I_UpdateAndroid(void);
+    I_UpdateAndroid();
+#endif
 }
 
 
@@ -832,7 +837,9 @@ void I_FinishUpdate (void)
 	}
 
     // Draw disk icon before blit, if necessary.
+#ifndef __ANDROID__
     V_DrawDiskIcon();
+#endif
 
 #ifndef CRISPY_TRUECOLOR
     if (palette_to_set)
@@ -1388,8 +1395,9 @@ static void SetVideoMode(void)
 
     // Set the highdpi flag - this makes a big difference on Macs with
     // retina displays, especially when using small window sizes.
+#ifndef __ANDROID__
     window_flags |= SDL_WINDOW_ALLOW_HIGHDPI;
-
+#endif
     if (fullscreen)
     {
         if (fullscreen_width == 0 && fullscreen_height == 0)
@@ -1425,6 +1433,9 @@ static void SetVideoMode(void)
 
     if (screen == NULL)
     {
+#ifdef __ANDROID__
+        SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 ); // Defaults to 24 which is not needed and fails on old Tegras
+#endif
         screen = SDL_CreateWindow(NULL, x, y, w, h, window_flags);
 
         if (screen == NULL)
@@ -1434,6 +1445,10 @@ static void SetVideoMode(void)
         }
 
         pixel_format = SDL_GetWindowPixelFormat(screen);
+
+#ifdef __ANDROID__
+		pixel_format = SDL_PIXELFORMAT_BGRA8888;
+#endif
 
         SDL_SetWindowMinimumSize(screen, SCREENWIDTH, actualheight);
 
@@ -1450,7 +1465,7 @@ static void SetVideoMode(void)
         I_Error("Could not get display mode for video display #%d: %s",
         video_display, SDL_GetError());
     }
-
+#ifndef __ANDROID__ // No vsync, also definetly on software mode as VERY slow
     // Turn on vsync if we aren't in a -timedemo
     if (!singletics && mode.refresh_rate > 0)
     {
@@ -1466,6 +1481,17 @@ static void SetVideoMode(void)
         renderer_flags &= ~SDL_RENDERER_PRESENTVSYNC;
         crispy->vsync = false;
     }
+#else // Android
+    renderer_flags = SDL_RENDERER_ACCELERATED;
+
+    if (!singletics && mode.refresh_rate > 0)
+    {
+        if (crispy->vsync) // [crispy] uncapped vsync
+        {
+            renderer_flags |= SDL_RENDERER_PRESENTVSYNC;
+        }
+    }
+#endif
 
     if (renderer != NULL)
     {
@@ -1608,6 +1634,8 @@ static void SetVideoMode(void)
 
     CreateUpscaledTexture(true);
 }
+extern int mobile_screen_width;
+extern int mobile_screen_height;
 
 // [crispy] re-calculate SCREENWIDTH, SCREENHEIGHT, NONWIDEWIDTH and WIDESCREENDELTA
 void I_GetScreenDimensions (void)
@@ -1623,6 +1651,10 @@ void I_GetScreenDimensions (void)
 
 	ah = (aspect_ratio_correct == 1) ? (6 * SCREENHEIGHT / 5) : SCREENHEIGHT;
 
+#ifdef __ANDROID__
+    w = mobile_screen_width;
+    h = mobile_screen_height;
+#else
 	if (SDL_GetCurrentDisplayMode(video_display, &mode) == 0)
 	{
 		// [crispy] sanity check: really widescreen display?
@@ -1632,7 +1664,7 @@ void I_GetScreenDimensions (void)
 			h = mode.h;
 		}
 	}
-
+#endif
 	// [crispy] widescreen rendering makes no sense without aspect ratio correction
 	if (crispy->widescreen && aspect_ratio_correct == 1)
 	{
@@ -1663,7 +1695,7 @@ void I_GetScreenDimensions (void)
 
 	WIDESCREENDELTA = ((SCREENWIDTH - NONWIDEWIDTH) >> crispy->hires) / 2;
 }
-
+void I_ReInitGraphics (int reinit);
 // [crispy] calls native SDL vsync toggle
 void I_ToggleVsync (void)
 {
@@ -1854,6 +1886,12 @@ void I_ReInitGraphics (int reinit)
 			flags &= ~SDL_RENDERER_PRESENTVSYNC;
 		}
 
+#ifdef __ANDROID__
+        flags = SDL_RENDERER_ACCELERATED;
+        if(crispy->vsync)
+            flags |= SDL_RENDERER_PRESENTVSYNC;
+#endif
+        flags = SDL_RENDERER_ACCELERATED;
 		SDL_DestroyRenderer(renderer);
 		renderer = SDL_CreateRenderer(screen, -1, flags);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

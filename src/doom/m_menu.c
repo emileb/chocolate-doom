@@ -3011,6 +3011,9 @@ void M_StartControlPanel (void)
         sendpause = true;
     
     menuactive = 1;
+ #ifdef __ANDROID__
+     messageNeedsInput = false;
+ #endif
     currentMenu = &MainDef;         // JDC
     itemOn = currentMenu->lastOn;   // JDC
 }
@@ -3177,6 +3180,9 @@ void M_Drawer (void)
 void M_ClearMenus (void)
 {
     menuactive = 0;
+#ifdef __ANDROID__
+    messageNeedsInput = false;
+#endif
 
     // [crispy] entering menus while recording demos pauses the game
     if (demorecording && paused)

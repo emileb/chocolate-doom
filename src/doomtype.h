@@ -34,11 +34,13 @@
 #if !HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP
 
 #include <string.h>
+#ifndef __ANDROID__
 #if !HAVE_DECL_STRCASECMP
 #define strcasecmp stricmp
 #endif
 #if !HAVE_DECL_STRNCASECMP
 #define strncasecmp strnicmp
+#endif
 #endif
 
 #else
@@ -47,6 +49,12 @@
 
 #endif
 
+#ifdef __ANDROID__
+#ifndef LOGI
+#include <android/log.h>
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,"JNI", __VA_ARGS__))
+#endif
+#endif
 
 //
 // The packed attribute forces structures to be packed into the minimum 

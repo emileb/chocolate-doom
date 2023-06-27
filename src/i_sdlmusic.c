@@ -87,6 +87,11 @@ static char sdl_mixer_disable_fluidsynth[] = "SDL_MIXER_DISABLE_FLUIDSYNTH=1";
 
 void I_InitTimidityConfig(void)
 {
+	
+#ifdef __ANDROID__ // We have already done this
+	return;
+#endif
+
     char *env_string;
     boolean success;
 

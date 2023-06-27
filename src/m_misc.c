@@ -578,6 +578,8 @@ char *M_TempFile(const char *s)
     {
         tempdir = ".";
     }
+#elif __ANDROID__
+    tempdir = "."; //Just use cwd
 #else
     // In Unix, just use /tmp.
 

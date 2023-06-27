@@ -245,7 +245,9 @@ int TXT_Init(void)
     {
         flags |= SDL_WINDOW_ALLOW_HIGHDPI;
     }
-
+#ifdef __ANDROID__
+        SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 ); // Defaults to 24 which is not needed and fails on old Tegras
+#endif
     TXT_SDLWindow =
         SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                          screen_image_w, screen_image_h, flags);

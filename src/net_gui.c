@@ -175,7 +175,11 @@ static void UpdateGUI(void)
 
     if (net_client_wait_data.is_controller)
     {
+#ifdef __ANDROID__
+        startgame = TXT_NewWindowAction(KEY_ENTER, "Start game");
+#else
         startgame = TXT_NewWindowAction(' ', "Start game");
+#endif
         TXT_SignalConnect(startgame, "pressed", StartGame, NULL);
     }
     else

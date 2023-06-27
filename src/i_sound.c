@@ -242,6 +242,20 @@ void I_InitSound(boolean use_sfx_prefix)
     M_SetMusicPackDir();
 
     // Initialize the sound and music subsystems.
+#ifdef __ANDROID__
+    if(  M_CheckParm("-use_gus") > 0 )
+    {
+        snd_musicdevice = SNDDEVICE_GUS;
+    }
+    if(  M_CheckParm("-use_genmidi") > 0 )
+    {
+        snd_musicdevice = SNDDEVICE_GENMIDI;
+    }
+    if(  M_CheckParm("-use_opl") > 0 )
+    {
+        snd_musicdevice = SNDDEVICE_ADLIB;
+    }
+#endif
 
     if (!nosound && !screensaver_mode)
     {
@@ -535,7 +549,9 @@ boolean I_MusicIsPlaying(void)
 
 void I_BindSoundVariables(void)
 {
+#ifndef __ANDROID__ // Set this through the cmd args from Android
     M_BindIntVariable("snd_musicdevice",         &snd_musicdevice);
+#endif
     M_BindIntVariable("snd_sfxdevice",           &snd_sfxdevice);
     M_BindIntVariable("snd_sbport",              &snd_sbport);
     M_BindIntVariable("snd_sbirq",               &snd_sbirq);

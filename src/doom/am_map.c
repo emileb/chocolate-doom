@@ -1090,6 +1090,9 @@ void AM_updateLightLev(void)
 
 }
 
+#ifdef __ANDROID__
+void Mobile_AM_controls(double *zoom, fixed_t *pan_x, fixed_t *pan_y );
+#endif
 
 //
 // Updates on Game Tick

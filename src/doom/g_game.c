@@ -734,6 +734,10 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     }
     
     mousex = mousex2 = mousey = 0;
+ #ifdef __ANDROID__
+     extern void G_AndroidBuildTiccmd(ticcmd_t *cmd);
+     G_AndroidBuildTiccmd(cmd);
+ #endif
 	 
     if (forward > MAXPLMOVE) 
 	forward = MAXPLMOVE; 
