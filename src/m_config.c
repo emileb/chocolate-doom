@@ -3015,11 +3015,16 @@ float M_GetFloatVariable(const char *name)
 
 // Get the path to the default configuration dir to use, if NULL
 // is passed to M_SetConfigDir.
+#ifdef __ANDROID__
+extern const char *userFilesPath_c;
+#endif
 
 static char *GetDefaultConfigDir(void)
 {
 #ifdef __ANDROID__
-    return "./user_files/crispy-doom/";
+    static char path[PATH_MAX];
+    snprintf(path, PATH_MAX, "%s/crispy-doom/", userFilesPath_c);
+    return path;
 #endif
 
 #if !defined(_WIN32) || defined(_WIN32_WCE)
