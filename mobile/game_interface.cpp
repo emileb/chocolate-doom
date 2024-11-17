@@ -475,19 +475,27 @@ extern fixed_t sidemove[2];
 extern fixed_t angleturn[3];     // + slow turn
 
 static int mlooky = 0;
+
 //Called from the game
 void G_AndroidBuildTiccmd(ticcmd_t *cmd)
 {
-
     int blockGamepad( void );
     int blockMove = blockGamepad() & ANALOGUE_AXIS_FWD;
     int blockLook = blockGamepad() & ANALOGUE_AXIS_PITCH;
 
-
     if( !blockMove )
     {
-	    cmd->forwardmove  += forwardmove_android * forwardmove[1];
-    	cmd->sidemove  += sidemove_android   * sidemove[1];
+        float fwdSpeed =  forwardmove_android;
+        float sideSpeed = sidemove_android;
+
+        if(!isPlayerRunning())
+        {
+            fwdSpeed = fwdSpeed / 2;
+            sideSpeed = sideSpeed /2;
+        }
+
+	    cmd->forwardmove  += fwdSpeed * forwardmove[1];
+    	cmd->sidemove  += sideSpeed   * sidemove[1];
     }
 
     if( !blockLook )
@@ -521,7 +529,6 @@ void G_AndroidBuildTiccmd(ticcmd_t *cmd)
 
             mlooky = 0;
         }
-
 
         cmd->angleturn += look_yaw_mouse * 70000;
         look_yaw_mouse = 0;
