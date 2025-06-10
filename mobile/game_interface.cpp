@@ -441,6 +441,14 @@ int PortableShowKeyboard(void){
 	return 0;
 }
 
+bool PortableSetAlwaysRun(bool run)
+{
+    //cl_run = !cl_run;
+    ActionKey(run, key_speed);
+
+    return false;
+}
+
 #ifndef CHOC_SETUP
 
 void I_UpdateAndroid(void)
