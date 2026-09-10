@@ -676,7 +676,7 @@ static boolean ReadDescriptionForSlot(int slot, char *description)
 {
     FILE *fp;
     boolean found;
-    char name[100];
+    char name[SV_FILENAME_MAX];
     char versionText[HXS_VERSION_TEXT_LENGTH];
 
     M_snprintf(name, sizeof(name), "%shex%d.hxs", SavePath, slot);

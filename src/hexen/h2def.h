@@ -805,6 +805,9 @@ void G_ScreenShot(void);
 #define HXS_VERSION_TEXT_LENGTH 16
 #define HXS_DESCRIPTION_LENGTH 24
 
+// SavePath can be a long Android scoped-storage path, so save filenames need room
+#define SV_FILENAME_MAX 512
+
 extern char *SavePath;
 
 void SV_SaveGame(int slot, char *description);

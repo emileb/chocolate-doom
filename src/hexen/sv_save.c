@@ -1925,7 +1925,7 @@ static void StreamOut_floorWaggle_t(floorWaggle_t *str)
 
 void SV_SaveGame(int slot, char *description)
 {
-    char fileName[100];
+    char fileName[SV_FILENAME_MAX];
     char versionText[HXS_VERSION_TEXT_LENGTH];
     unsigned int i;
 
@@ -1985,7 +1985,7 @@ void SV_SaveGame(int slot, char *description)
 
 void SV_SaveMap(boolean savePlayers)
 {
-    char fileName[100];
+    char fileName[SV_FILENAME_MAX];
 
     SavingPlayers = savePlayers;
 
@@ -2026,7 +2026,7 @@ void SV_SaveMap(boolean savePlayers)
 void SV_LoadGame(int slot)
 {
     int i;
-    char fileName[100];
+    char fileName[SV_FILENAME_MAX];
     char version_text[HXS_VERSION_TEXT_LENGTH];
     player_t playerBackup[MAXPLAYERS];
     mobj_t *mobj;
@@ -2145,7 +2145,7 @@ void SV_MapTeleport(int map, int position)
 {
     int i;
     int j;
-    char fileName[100];
+    char fileName[SV_FILENAME_MAX];
     player_t playerBackup[MAXPLAYERS];
     mobj_t *targetPlayerMobj;
     mobj_t *mobj;
@@ -2335,7 +2335,7 @@ int SV_GetRebornSlot(void)
 
 boolean SV_RebornSlotAvailable(void)
 {
-    char fileName[100];
+    char fileName[SV_FILENAME_MAX];
 
     M_snprintf(fileName, sizeof(fileName), "%shex%d.hxs", SavePath, REBORN_SLOT);
     return ExistingFile(fileName);
@@ -2349,7 +2349,7 @@ boolean SV_RebornSlotAvailable(void)
 
 void SV_LoadMap(void)
 {
-    char fileName[100];
+    char fileName[SV_FILENAME_MAX];
 
     // Load a base level
     G_InitNew(gameskill, gameepisode, gamemap);
@@ -3194,7 +3194,7 @@ static void AssertSegment(gameArchiveSegment_t segType)
 static void ClearSaveSlot(int slot)
 {
     int i;
-    char fileName[100];
+    char fileName[SV_FILENAME_MAX];
 
     for (i = 0; i < MAX_MAPS; i++)
     {
@@ -3217,8 +3217,8 @@ static void ClearSaveSlot(int slot)
 static void CopySaveSlot(int sourceSlot, int destSlot)
 {
     int i;
-    char sourceName[100];
-    char destName[100];
+    char sourceName[SV_FILENAME_MAX];
+    char destName[SV_FILENAME_MAX];
 
     for (i = 0; i < MAX_MAPS; i++)
     {
